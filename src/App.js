@@ -1,14 +1,16 @@
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'reactstrap';
+import { BrowserRouter,Routes,Route } from 'react-router-dom';
+import Home from './Home';
 
 function App() {
   return (
-    <>
-      <h1>This is a Blogging App</h1>
-      <Button color='success'>Hello</Button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/home' element={<Home/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
