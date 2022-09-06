@@ -1,4 +1,3 @@
-
 import {
   Collapse,
   Navbar,
@@ -8,20 +7,27 @@ import {
   NavItem,
   NavLink,
   NavbarText,
-} from 'reactstrap';
+} from "reactstrap";
 
-import {NavLink as ReactLink} from "react-router-dom";
+import { NavLink as ReactLink } from "react-router-dom";
+import { useState } from "react";
 
 const NavigationMenu = () => {
-    return(
-      <div>
-      <Navbar color='dark' dark expand='md' fixed=''>
-        <NavbarBrand tag={ReactLink} to="/">Blog App</NavbarBrand>
-        <NavbarToggler/>
-        <Collapse navbar>
+  const [isCollapse, setIsCollapse] = useState(false);
+
+  return (
+    <div>
+      <Navbar color="dark" dark expand="md" fixed="">
+        <NavbarBrand tag={ReactLink} to="/">
+          Blog App
+        </NavbarBrand>
+        <NavbarToggler onClick={() => setIsCollapse(!isCollapse)} />
+        <Collapse isOpen={isCollapse} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <NavLink tag={ReactLink} to="/">Home</NavLink>
+              <NavLink tag={ReactLink} to="/">
+                Home
+              </NavLink>
             </NavItem>
             <NavItem>
               <NavLink tag={ReactLink} to="/about">
@@ -38,7 +44,7 @@ const NavigationMenu = () => {
                 Sign Up
               </NavLink>
             </NavItem>
-            
+
             {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 More
@@ -67,7 +73,7 @@ const NavigationMenu = () => {
         </Collapse>
       </Navbar>
     </div>
-    )
-}
+  );
+};
 
 export default NavigationMenu;
