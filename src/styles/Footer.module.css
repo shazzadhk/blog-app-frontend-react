@@ -1,0 +1,32 @@
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111;
+  height: auto;
+  width: 100vw;
+  color: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding-top: -100px;
+  box-sizing: border-box;
+}
+
+.footer_bottom {
+  background: #000;
+  width: 100vw;
+  padding-top: 7px;
+  text-align: center;
+}
+.footer_bottom p {
+  text-align: center;
+  font-size: 14px;
+  text-transform: capitalize;
+  color: white;
+}
+.footer_bottom p span {
+  color: #44bae8;
+  font-size: 16px;
+  text-decoration: none;
+}

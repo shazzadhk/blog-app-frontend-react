@@ -1,5 +1,6 @@
 import Layout from "./../components/Layout";
 import { useState } from "react";
+import { signUp } from "./../services/UserService";
 import {
   Form,
   FormGroup,
@@ -12,13 +13,20 @@ import {
   CardBody,
   Row,
   Col,
+  FormFeedback,
 } from "reactstrap";
+import { toast } from "react-toastify";
 
 const Registration = () => {
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
+  });
+
+  const [error, setError] = useState({
+    errors: {},
+    isError: false,
   });
 
   const handleInput = (event, field) => {
@@ -31,6 +39,31 @@ const Registration = () => {
       email: "",
       password: "",
     });
+  };
+
+  const submitForm = (event) => {
+    event.preventDefault();
+
+    signUp(data)
+      .then((res) => {
+        console.log(res);
+        console.log("Created Successfully");
+        toast.success("Registration Successfully..");
+        setError({
+          errors: {},
+          isError: false,
+        });
+        resetData();
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error");
+        toast.error("Registration Failed..");
+        setError({
+          errors: error,
+          isError: true,
+        });
+      });
   };
 
   return (
@@ -48,7 +81,7 @@ const Registration = () => {
                 <h3>Registration Form</h3>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={submitForm}>
                   <FormGroup>
                     <Label for="fullName">Name</Label>
                     <Input
@@ -58,7 +91,13 @@ const Registration = () => {
                       type="text"
                       value={data.name}
                       onChange={(e) => handleInput(e, "name")}
+                      invalid={
+                        error.errors?.response?.data?.name ? true : false
+                      }
                     />
+                    <FormFeedback>
+                      {error.errors?.response?.data?.name}
+                    </FormFeedback>
                   </FormGroup>
                   <FormGroup>
                     <Label for="exampleEmail">Email</Label>
@@ -66,10 +105,16 @@ const Registration = () => {
                       id="exampleEmail"
                       name="email"
                       placeholder="Enter Your Email"
-                      type="email"
+                      type="text"
                       value={data.email}
                       onChange={(e) => handleInput(e, "email")}
+                      invalid={
+                        error.errors?.response?.data?.email ? true : false
+                      }
                     />
+                    <FormFeedback>
+                      {error.errors?.response?.data?.email}
+                    </FormFeedback>
                   </FormGroup>
                   <FormGroup>
                     <Label for="examplePassword">Password</Label>
@@ -80,7 +125,13 @@ const Registration = () => {
                       type="password"
                       value={data.password}
                       onChange={(e) => handleInput(e, "password")}
+                      invalid={
+                        error.errors?.response?.data?.password ? true : false
+                      }
                     />
+                    <FormFeedback>
+                      {error.errors?.response?.data?.password}
+                    </FormFeedback>
                   </FormGroup>
 
                   <Container className="text-center">
