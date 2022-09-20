@@ -11,6 +11,7 @@ import {
 
 import { NavLink as ReactLink } from "react-router-dom";
 import { useState } from "react";
+// import { getCurrentUserDetail } from "../auth/index";
 
 const NavigationMenu = () => {
   const [isCollapse, setIsCollapse] = useState(false);
@@ -69,7 +70,7 @@ const NavigationMenu = () => {
               </DropdownMenu>
             </UncontrolledDropdown> */}
           </Nav>
-          <NavbarText>Shazzad Hossain</NavbarText>
+          <NavbarText>Guest User</NavbarText>
         </Collapse>
       </Navbar>
     </div>

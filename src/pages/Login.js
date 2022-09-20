@@ -1,4 +1,7 @@
 import Layout from "./../components/Layout";
+import { useState } from "react";
+import { loginUser } from "../services/UserService";
+import { toast } from "react-toastify";
 import {
   Container,
   Row,
@@ -12,8 +15,48 @@ import {
   Button,
   Input,
 } from "reactstrap";
+import { doLogin } from "../auth";
 
 const Login = () => {
+  const [loginDetails, setLoginDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputField = (event, field) => {
+    let fieldValue = event.target.value;
+    setLoginDetails({
+      ...loginDetails,
+      [field]: fieldValue,
+    });
+  };
+
+  const resetLoginDetails = () => {
+    setLoginDetails({
+      email: "",
+      password: "",
+    });
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    loginUser(loginDetails)
+      .then((data) => {
+        console.log(data);
+        doLogin(data);
+        toast.success("Login Successful");
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 400 || error.response.status === 404) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+      });
+  };
+
   return (
     <Layout>
       <Container fluid="md" className="my-3">
@@ -30,14 +73,16 @@ const Login = () => {
                 <h3>Login Form</h3>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={handleFormSubmit}>
                   <FormGroup>
                     <Label for="exampleEmail">Email</Label>
                     <Input
                       id="exampleEmail"
                       name="email"
                       placeholder="Enter Your Email"
-                      type="email"
+                      type="text"
+                      value={loginDetails.email}
+                      onChange={(e) => handleInputField(e, "email")}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -47,12 +92,19 @@ const Login = () => {
                       name="password"
                       placeholder="Enter password"
                       type="password"
+                      value={loginDetails.password}
+                      onChange={(e) => handleInputField(e, "password")}
                     />
                   </FormGroup>
 
                   <Container className="text-center">
                     <Button className="bg-success">Login</Button>
-                    <Button className="ms-2 bg-danger">Reset</Button>
+                    <Button
+                      onClick={resetLoginDetails}
+                      className="ms-2 bg-danger"
+                    >
+                      Reset
+                    </Button>
                   </Container>
                 </Form>
               </CardBody>
