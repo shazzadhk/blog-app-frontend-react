@@ -16,12 +16,15 @@ import {
   Input,
 } from "reactstrap";
 import { doLogin } from "../auth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleInputField = (event, field) => {
     let fieldValue = event.target.value;
@@ -45,6 +48,7 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         doLogin(data);
+        navigate("/");
         toast.success("Login Successful");
       })
       .catch((error) => {
