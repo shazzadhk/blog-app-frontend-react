@@ -10,22 +10,25 @@ import "react-toastify/dist/ReactToastify.css";
 import Contact from "./pages/Contact";
 import UserDashboard from "./pages/UserDashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import UserContextProvider from "./context/UserContextProvider";
 
 function App() {
   return (
-    <BrowserRouter>
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Registration />} />
-        <Route path="/contact_us" element={<Contact />} />
-        <Route path="/user" element={<PrivateRoute />}>
-          <Route path="dashboard" element={<UserDashboard />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <UserContextProvider>
+      <BrowserRouter>
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Registration />} />
+          <Route path="/contact_us" element={<Contact />} />
+          <Route path="/user" element={<PrivateRoute />}>
+            <Route path="dashboard" element={<UserDashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserContextProvider>
   );
 }
 

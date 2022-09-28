@@ -9,29 +9,38 @@ import {
 } from "reactstrap";
 
 import { NavLink as ReactLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { isLoggedIn, doLogout, getCurrentUserDetail } from "../auth";
 // import { getCurrentUserDetail } from "../auth/index";
 import { useNavigate } from "react-router";
+import userContext from "./../context/UserContext";
 
 const NavigationMenu = () => {
   const [isCollapse, setIsCollapse] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
 
+  const contextData = useContext(userContext);
+
   const navigate = useNavigate();
 
   const dosignout = () => {
-    doLogout();
+    doLogout(() => {
+      contextData.setUser({
+        data: {},
+        login: false,
+      });
+      setIsLogin(false);
+      setUser(null);
+    });
+
     navigate("/login");
-    setIsLogin(false);
-    setUser(null);
   };
 
   useEffect(() => {
     setIsLogin(isLoggedIn());
     setUser(getCurrentUserDetail());
-  }, [isLogin]);
+  }, []);
 
   return (
     <div>

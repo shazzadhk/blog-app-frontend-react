@@ -1,5 +1,5 @@
 import Layout from "./../components/Layout";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { loginUser } from "../services/UserService";
 import { toast } from "react-toastify";
 import {
@@ -17,8 +17,11 @@ import {
 } from "reactstrap";
 import { doLogin } from "../auth";
 import { useNavigate } from "react-router";
+import userContext from "../context/UserContext";
 
 const Login = () => {
+  const contextData = useContext(userContext);
+
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
@@ -46,9 +49,18 @@ const Login = () => {
 
     loginUser(loginDetails)
       .then((data) => {
-        console.log(data);
-        doLogin(data);
-        navigate("/");
+        console.log(data.userDto);
+        console.log(contextData.user.login);
+        doLogin(data, () => {
+          contextData.setUser({
+            data: data.userDto,
+            login: true,
+          });
+          navigate("/");
+        });
+
+        console.log(contextData.user.login);
+
         toast.success("Login Successful");
       })
       .catch((error) => {
