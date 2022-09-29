@@ -13,23 +13,20 @@ import { useEffect, useState, useContext } from "react";
 import { isLoggedIn, doLogout, getCurrentUserDetail } from "../auth";
 // import { getCurrentUserDetail } from "../auth/index";
 import { useNavigate } from "react-router";
-import userContext from "./../context/UserContext";
+import UserContext from "./../context/UserContext";
 
 const NavigationMenu = () => {
   const [isCollapse, setIsCollapse] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
 
-  const contextData = useContext(userContext);
+  const contextData = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const dosignout = () => {
     doLogout(() => {
-      contextData.setUser({
-        data: {},
-        login: false,
-      });
+      contextData.updateState(null,'logout');
       setIsLogin(false);
       setUser(null);
     });

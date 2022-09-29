@@ -17,10 +17,10 @@ import {
 } from "reactstrap";
 import { doLogin } from "../auth";
 import { useNavigate } from "react-router";
-import userContext from "../context/UserContext";
+import UserContext from "../context/UserContext";
 
 const Login = () => {
-  const contextData = useContext(userContext);
+  const contextData = useContext(UserContext);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -49,17 +49,16 @@ const Login = () => {
 
     loginUser(loginDetails)
       .then((data) => {
-        console.log(data.userDto);
-        console.log(contextData.user.login);
         doLogin(data, () => {
-          contextData.setUser({
-            data: data.userDto,
-            login: true,
-          });
-          navigate("/");
-        });
+          
+          contextData.updateState(data,'login');
+          
+          // console.log(contextData.user.login);
+          // console.log(contextData.user.data);
 
-        console.log(contextData.user.login);
+          navigate("/")
+        });
+        
 
         toast.success("Login Successful");
       })
