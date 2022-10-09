@@ -9,16 +9,16 @@ import {
 } from "reactstrap";
 
 import { NavLink as ReactLink } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
-import { isLoggedIn, doLogout, getCurrentUserDetail } from "../auth";
+import { useState, useContext } from "react";
+import { doLogout } from "../auth";
 // import { getCurrentUserDetail } from "../auth/index";
 import { useNavigate } from "react-router";
 import UserContext from "./../context/UserContext";
 
 const NavigationMenu = () => {
   const [isCollapse, setIsCollapse] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useState(null);
+  // const [isLogin, setIsLogin] = useState(false);
+  // const [user, setUser] = useState(null);
 
   const contextData = useContext(UserContext);
 
@@ -26,18 +26,18 @@ const NavigationMenu = () => {
 
   const dosignout = () => {
     doLogout(() => {
-      contextData.updateState(null,'logout');
-      setIsLogin(false);
-      setUser(null);
+      contextData.updateState(null, "logout");
+      // setIsLogin(false);
+      // setUser(null);
     });
 
     navigate("/login");
   };
 
-  useEffect(() => {
-    setIsLogin(isLoggedIn());
-    setUser(getCurrentUserDetail());
-  }, []);
+  // useEffect(() => {
+  //   setIsLogin(isLoggedIn());
+  //   setUser(getCurrentUserDetail());
+  // }, []);
 
   return (
     <div>
@@ -95,19 +95,19 @@ const NavigationMenu = () => {
           </Nav>
 
           <Nav navbar>
-            {isLogin && (
+            {contextData.user.login && (
               <>
                 <NavItem>
                   <NavLink onClick={dosignout}>Logout</NavLink>
                 </NavItem>
 
                 <NavItem>
-                  <NavLink>{user.name}</NavLink>
+                  <NavLink>{contextData.user.data.name}</NavLink>
                 </NavItem>
               </>
             )}
 
-            {!isLogin && (
+            {!contextData.user.login && (
               <>
                 <NavItem>
                   <NavLink tag={ReactLink} to="/login">

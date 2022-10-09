@@ -50,15 +50,13 @@ const Login = () => {
     loginUser(loginDetails)
       .then((data) => {
         doLogin(data, () => {
-          
-          contextData.updateState(data,'login');
-          
+          contextData.updateState(data, "login");
+
           // console.log(contextData.user.login);
           // console.log(contextData.user.data);
 
-          navigate("/")
+          navigate("/");
         });
-        
 
         toast.success("Login Successful");
       })
