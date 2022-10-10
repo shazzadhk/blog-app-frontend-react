@@ -10,10 +10,10 @@ import {
 
 import { NavLink as ReactLink } from "react-router-dom";
 import { useState, useContext } from "react";
-import { doLogout } from "../auth";
 // import { getCurrentUserDetail } from "../auth/index";
 import { useNavigate } from "react-router";
 import UserContext from "./../context/UserContext";
+import { doLogout } from "./../auth/index";
 
 const NavigationMenu = () => {
   const [isCollapse, setIsCollapse] = useState(false);
@@ -101,9 +101,9 @@ const NavigationMenu = () => {
                   <NavLink onClick={dosignout}>Logout</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink>{contextData.user.data.name}</NavLink>
+                  {/* <NavLink>{contextData.user.data.name}</NavLink> */}
                   <NavLink tag={ReactLink} to="/user/dashboard">
-                    {contextData.user.name}
+                    {contextData.user.data.name}
                   </NavLink>
                 </NavItem>
               </>
