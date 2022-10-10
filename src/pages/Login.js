@@ -81,7 +81,7 @@ const Login = () => {
             }}
             sm="12"
           >
-            <Card>
+            <Card className="shadow">
               <CardHeader>
                 <h3>Login Form</h3>
               </CardHeader>

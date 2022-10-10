@@ -100,9 +100,11 @@ const NavigationMenu = () => {
                 <NavItem>
                   <NavLink onClick={dosignout}>Logout</NavLink>
                 </NavItem>
-
                 <NavItem>
                   <NavLink>{contextData.user.data.name}</NavLink>
+                  <NavLink tag={ReactLink} to="/user/dashboard">
+                    {contextData.user.name}
+                  </NavLink>
                 </NavItem>
               </>
             )}

@@ -1,10 +1,12 @@
+import AddPost from "../components/AddPost";
+import Layout from "../components/Layout";
 
 
 const UserDashboard = () => {
     return(
-        <>
-            <h1>This is User Dashboard Page</h1>
-        </>
+        <Layout>
+            <AddPost />
+        </Layout>
     )
 }
 

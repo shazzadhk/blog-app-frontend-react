@@ -76,7 +76,7 @@ const Registration = () => {
               size: 6,
             }}
           >
-            <Card>
+            <Card className="shadow">
               <CardHeader>
                 <h3>Registration Form</h3>
               </CardHeader>
