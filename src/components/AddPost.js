@@ -14,7 +14,7 @@ import {
 
 const AddPost = () => {
 
-    const[category,setCategory] = useState({});
+    const[category,setCategory] = useState([]);
 
     useEffect(()=> {
       console.log("dfjhsdjkf");
@@ -24,7 +24,7 @@ const AddPost = () => {
       }).catch((error) => {
         console.log(error);
       })
-    });
+    },[]);
 
 return(
     <>
@@ -77,19 +77,20 @@ return(
                     id="multiCategory"
                     name="multiCategory"
                     type="select"
+                    defaultValue={0}
                     >
-                    <option>
-                        Programming
+
+                    <option disabled value={0}>
+                      --Select One--
                     </option>
-                    <option>
-                        Web Development
-                    </option>
-                    <option>
-                        Android App Development
-                    </option>
-                    <option>
-                        Database
-                    </option>               
+                    {
+                      category.map((c) => (
+                        <option value={c.categoryId} key={c.categoryId}>
+                          {c.categoryTitle}
+                        </option>
+                      ))
+                    }
+                                   
                     </Input>
                 </FormGroup>
 

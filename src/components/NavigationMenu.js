@@ -102,7 +102,7 @@ const NavigationMenu = () => {
                 </NavItem>
 
                 <NavItem>
-                  <NavLink>{user.name}</NavLink>
+                  <NavLink tag={ReactLink} to="/user/dashboard">{user.name}</NavLink>
                 </NavItem>
               </>
             )}
