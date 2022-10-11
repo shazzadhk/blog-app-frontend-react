@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Form,
   FormGroup,
@@ -11,11 +11,28 @@ import {
   CardBody,
 } from "reactstrap";
 import { getAllCategories } from "../services/CategoryService";
+import { createPost } from "./../services/PostService";
+import { toast } from "react-toastify";
+import JoditEditor from "jodit-react";
+import { getCurrentUserDetail } from "../auth";
 
 const AddPost = () => {
   const [category, setCategory] = useState([]);
+  const [postData, setPostData] = useState({
+    postTitle: "",
+    postContent: "",
+    categoryId: 0,
+  });
+
+  const [user, setUser] = useState(null);
+
+  const editor = useRef(null);
 
   useEffect(() => {
+    console.log("In UseEffect Block");
+
+    setUser(getCurrentUserDetail());
+
     getAllCategories()
       .then((data) => {
         setCategory(data);
@@ -25,6 +42,47 @@ const AddPost = () => {
       });
   }, []);
 
+  const handleInputField = (event) => {
+    setPostData({ ...postData, [event.target.name]: event.target.value });
+  };
+
+  const contentFieldChanaged = (newContent) => {
+    setPostData({ ...postData, postContent: newContent });
+    console.log(user);
+  };
+
+  const savePost = (event) => {
+    event.preventDefault();
+    console.log(postData);
+
+    postData.userId = user.id;
+
+    createPost(postData)
+      .then((response) => {
+        console.log(`data: ${response.data}`);
+        console.log(`data: ${response.status}`);
+        toast.success("Post added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Creating Post Failed");
+      });
+
+    setPostData({
+      postTitle: "",
+      postContent: "",
+      categoryId: 0,
+    });
+  };
+
+  const resetPost = () => {
+    setPostData({
+      postTitle: "",
+      postContent: "",
+      categoryId: 0,
+    });
+  };
+
   return (
     <>
       <Container fluid="md" className="my-3">
@@ -33,7 +91,7 @@ const AddPost = () => {
             <h3>Add Post</h3>
           </CardHeader>
           <CardBody>
-            <Form>
+            <Form onSubmit={savePost}>
               <FormGroup>
                 <Label for="postTitle">Post Title</Label>
                 <Input
@@ -41,6 +99,8 @@ const AddPost = () => {
                   name="postTitle"
                   placeholder="Enter Your Post Title"
                   type="text"
+                  value={postData.postTitle}
+                  onChange={handleInputField}
                   //   value={data.name}
                   //   onChange={(e) => handleInput(e, "name")}
                   //   invalid={
@@ -53,28 +113,27 @@ const AddPost = () => {
               </FormGroup>
               <FormGroup>
                 <Label for="postBody">Post Content</Label>
-                <Input
+                {/* <Input
                   id="postBody"
                   name="postBody"
                   type="textarea"
                   style={{ height: "120px" }}
-                  //   value={data.email}
-                  //   onChange={(e) => handleInput(e, "email")}
-                  //   invalid={
-                  //     error.errors?.response?.data?.email ? true : false
-                  //   }
+                  
+                /> */}
+                <JoditEditor
+                  ref={editor}
+                  value={postData.postContent}
+                  onChange={(newContent) => contentFieldChanaged(newContent)}
                 />
-                {/* <FormFeedback>
-                      {error.errors?.response?.data?.email}
-                    </FormFeedback> */}
               </FormGroup>
               <FormGroup>
                 <Label for="multiCategory">Select Category</Label>
                 <Input
                   id="multiCategory"
-                  name="multiCategory"
+                  name="categoryId"
                   type="select"
                   defaultValue={0}
+                  onChange={handleInputField}
                 >
                   <option disabled value={0}>
                     --Select One--
@@ -89,7 +148,7 @@ const AddPost = () => {
 
               <Container className="text-center">
                 <Button color="success">Add Post</Button>
-                <Button color="danger" className="ms-2">
+                <Button color="danger" className="ms-2" onClick={resetPost}>
                   Reset Post
                 </Button>
               </Container>
