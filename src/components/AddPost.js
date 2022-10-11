@@ -42,25 +42,26 @@ const AddPost = () => {
       });
   }, []);
 
+  //save input field value
   const handleInputField = (event) => {
     setPostData({ ...postData, [event.target.name]: event.target.value });
   };
 
+  //save only post content field value
   const contentFieldChanaged = (newContent) => {
     setPostData({ ...postData, postContent: newContent });
-    console.log(user);
   };
 
+  //save post
   const savePost = (event) => {
     event.preventDefault();
-    console.log(postData);
+    // console.log(postData);
 
     postData.userId = user.id;
 
     createPost(postData)
       .then((response) => {
-        console.log(`data: ${response.data}`);
-        console.log(`data: ${response.status}`);
+        console.log(response);
         toast.success("Post added successfully");
       })
       .catch((error) => {
@@ -68,6 +69,7 @@ const AddPost = () => {
         toast.error("Creating Post Failed");
       });
 
+    //after saving post we reset all input field value
     setPostData({
       postTitle: "",
       postContent: "",
@@ -75,6 +77,7 @@ const AddPost = () => {
     });
   };
 
+  //reset post
   const resetPost = () => {
     setPostData({
       postTitle: "",
